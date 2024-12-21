@@ -1,4 +1,5 @@
-﻿using GeneratedCode;
+﻿using System;
+using GeneratedCode;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
@@ -14,13 +15,17 @@ public partial class App : Application
 {
     public App ( )
     {
-        DebugSettings.EnableFrameRateCounter = true;
+        //DebugSettings.EnableFrameRateCounter = true;
         this.InitializeComponent();
         API = RestService.For<ISastImgAPI>("http://localhost:5265/");
     }
 
-    protected override void OnLaunched (Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+    protected override async void OnLaunched (Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
+        if ( await WinUI3XamlPreview.Preview.IsXamlPreviewLaunched() )
+        {
+            return;
+        }
         MainWindow?.Close();
         MainWindow = new Window()
         {
